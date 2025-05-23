@@ -1,0 +1,22 @@
+<div class="dashboard">
+  <app-container title="Filtros">
+    <app-select
+      label="Placa"
+      [options]="genderOptions"
+      (changed)="handleChange($event)"
+    ></app-select>
+  </app-container>
+
+  <div class="dashboard__data">
+    <app-container
+      class="dashboard__container"
+      title="Pontos encontrados"
+    ></app-container>
+    <app-container
+      class="dashboard__container"
+      title="Tempo total por POI"
+    ></app-container>
+  </div>
+
+  <app-container title="Localização dos POIs"></app-container>
+</div>

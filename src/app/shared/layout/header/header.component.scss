@@ -1,0 +1,22 @@
+@use "sass:map" as map;
+@use "tokens" as *;
+@use "mixins" as *;
+
+.header {
+  width: 100%;
+  height: 72px;
+
+  padding: $spacing-sm $spacing-lg;
+
+  display: flex;
+  align-items: center;
+
+  background-color: map.get($map: $primary, $key: 300);
+
+  &__title {
+    @include h2($font-weight-semi-bold);
+
+    font-size: 1.5rem;
+    color: map.get($map: $neutral, $key: 100);
+  }
+}

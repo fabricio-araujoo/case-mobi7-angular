@@ -1,0 +1,25 @@
+@use "sass:map" as map;
+@use "tokens" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap");
+
+html,
+body {
+  height: 100%;
+  font-family: $font;
+  background-color: map.get($map: $neutral, $key: 100);
+  color: map.get($map: $neutral, $key: 500);
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: map.get($map: $neutral, $key: 200);
+  border-radius: 0.1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: none;
+}

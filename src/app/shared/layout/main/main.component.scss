@@ -1,0 +1,9 @@
+@use "tokens" as *;
+
+.main {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+
+  padding: $spacing-lg;
+}

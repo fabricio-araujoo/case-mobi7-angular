@@ -1,0 +1,64 @@
+/* Reset básico de CSS */
+
+/* Remove o padding e margin padrão de todos os elementos */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Remove o estilo padrão dos links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove o estilo de lista padrão */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove o estilo padrão de tabelas */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove o estilo padrão dos campos de formulário */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+/* Ajusta o estilo de fontes padrão */
+body {
+  font-family: sans-serif; /* ou outra fonte padrão desejada */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ajusta o estilo de imagens */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Define um estilo padrão para os elementos de bloco */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}

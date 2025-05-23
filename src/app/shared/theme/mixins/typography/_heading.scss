@@ -1,0 +1,16 @@
+@use "tokens" as *;
+
+@mixin h2($weight: $font-weight-bold) {
+  font-size: $font-size-xl;
+  font-weight: $weight;
+}
+
+@mixin h3($weight: $font-weight-bold) {
+  font-size: $font-size-lg;
+  font-weight: $weight;
+}
+
+@mixin h4($weight: $font-weight-bold) {
+  font-size: $font-size-md;
+  font-weight: $weight;
+}

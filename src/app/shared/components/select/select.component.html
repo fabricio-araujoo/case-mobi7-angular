@@ -1,0 +1,33 @@
+<div class="select">
+  <div class="select__label">{{ label }}</div>
+
+  <div class="select__container">
+    <div
+      class="select__input"
+      [class]="{
+        'select__input--open': isOpen,
+      }"
+    >
+      icon
+
+      <input
+        #inputRef
+        type="text"
+        [value]="value()"
+        [placeholder]="placeholder"
+        (click)="handleClick()"
+        (input)="handleInput($event)"
+      />
+    </div>
+
+    @if (isOpen()) {
+    <div class="select__dropdown">
+      @for (item of filteredOptions(); track item.value) {
+      <div class="select__option" (click)="handleSelectOption(item)">
+        {{ item.label }}
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

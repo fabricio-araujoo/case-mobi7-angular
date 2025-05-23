@@ -1,0 +1,16 @@
+@use "tokens" as *;
+
+@mixin body-small($weight: $font-weight-regular) {
+  font-size: $font-size-xs;
+  font-weight: $weight;
+}
+
+@mixin body-regular($weight: $font-weight-regular) {
+  font-size: $font-size-sm;
+  font-weight: $weight;
+}
+
+@mixin body-large($weight: $font-weight-regular) {
+  font-size: $font-size-md;
+  font-weight: $weight;
+}
