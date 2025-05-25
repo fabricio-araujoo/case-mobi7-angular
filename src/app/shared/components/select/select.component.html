@@ -5,25 +5,33 @@
     <div
       class="select__input"
       [class]="{
-        'select__input--open': isOpen,
+        'select__input--open': isOpen(),
       }"
     >
-      icon
-
       <input
         #inputRef
         type="text"
-        [value]="value()"
+        [value]="isOpen() ? value() : selectedOption()?.label"
         [placeholder]="placeholder"
         (click)="handleClick()"
         (input)="handleInput($event)"
       />
+
+      <div class="select__icon">
+        <app-icon name="search"></app-icon>
+      </div>
     </div>
 
     @if (isOpen()) {
     <div class="select__dropdown">
       @for (item of filteredOptions(); track item.value) {
-      <div class="select__option" (click)="handleSelectOption(item)">
+      <div
+        class="select__option"
+        [class]="{
+          'select__option--active': item.value === selectedOption()?.value
+        }"
+        (click)="handleSelectOption(item)"
+      >
         {{ item.label }}
       </div>
       }

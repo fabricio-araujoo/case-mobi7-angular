@@ -49,11 +49,17 @@
     }
   }
 
+  &__icon {
+    color: map.get($map: $neutral, $key: 300);
+  }
+
   &__dropdown {
     position: absolute;
     width: 100%;
     height: auto;
     padding: $spacing-xs;
+
+    z-index: 1;
 
     margin-top: $spacing-xs;
 
@@ -75,6 +81,10 @@
     @include transition;
 
     &:hover {
+      background-color: map.get($map: $neutral, $key: 100);
+    }
+
+    &--active {
       background-color: map.get($map: $neutral, $key: 100);
     }
   }

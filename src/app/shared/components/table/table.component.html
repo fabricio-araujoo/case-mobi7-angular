@@ -1,1 +1,22 @@
-<p>table works!</p>
+<div class="table">
+  <div class="table__wrapper">
+    <table class="table__container">
+      <thead>
+        <tr>
+          @for (item of column; track item.field) {
+          <th>{{ item.label }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of data; track $index) {
+        <tr>
+          @for (col of column; track col.field) {
+          <td>{{ row[col.field] }}</td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

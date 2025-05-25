@@ -1,0 +1,9 @@
+<form class="dashboard-filter" [formGroup]="filtersForm">
+  <app-select
+    formControlName="placa"
+    label="Placa"
+    [options]="genderOptions"
+  ></app-select>
+
+  <app-date-picker formControlName="data" label="Data de entrega" />
+</form>

@@ -1,0 +1,33 @@
+<div class="date-picker">
+  <div class="date-picker__label">{{ label }}</div>
+
+  <div
+    class="date-picker__container"
+    [class]="{ 'date-picker__container--open': isOpen() }"
+  >
+    <input
+      matInput
+      class="date-picker__input"
+      [matDatepicker]="picker"
+      [value]="value"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      (dateChange)="handleInput($event)"
+      (blur)="onTouched()"
+    />
+
+    <mat-datepicker
+      #picker
+      (opened)="handleOpened()"
+      (closed)="handleClosed()"
+    ></mat-datepicker>
+
+    <div
+      class="date-picker__icon"
+      mat-raised-button
+      (mousedown)="picker.open()"
+    >
+      <app-icon name="calendar"></app-icon>
+    </div>
+  </div>
+</div>

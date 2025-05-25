@@ -1,0 +1,9 @@
+@use "sass:map" as map;
+@use "tokens" as *;
+@use "mixins" as *;
+
+.dashboard-filter {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: $spacing-sm;
+}
