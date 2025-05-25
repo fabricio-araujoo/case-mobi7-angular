@@ -61,7 +61,7 @@ export class DashboradChartComponent implements AfterViewInit, OnDestroy {
     },
     legend: {
       show: true,
-      title: 'Vendas por mês',
+      title: 'Vendas',
     },
     gradient: false,
     colorScheme: {

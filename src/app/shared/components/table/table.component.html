@@ -12,7 +12,16 @@
         @for (row of data; track $index) {
         <tr>
           @for (col of column; track col.field) {
-          <td>{{ row[col.field] }}</td>
+          <td>
+            @if (col.render) {
+            <ng-container
+              [ngTemplateOutlet]="col.render"
+              [ngTemplateOutletContext]="{ $implicit: row }"
+            ></ng-container>
+            } @else {
+            {{ row[col.field] }}
+            }
+          </td>
           }
         </tr>
         }

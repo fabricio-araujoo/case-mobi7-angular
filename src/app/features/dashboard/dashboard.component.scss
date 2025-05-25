@@ -5,7 +5,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: $spacing-lg;
+  gap: $spacing-md;
 
   &__container {
     box-sizing: border-box;
@@ -18,9 +18,27 @@
     @include border-radius;
   }
 
-  &__data {
+  &__header {
+    display: flex;
+    align-items: center;
+
+    & > h4 {
+      @include body-small($font-weight-bold);
+    }
+  }
+
+  &__table {
+    max-height: 30rem;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__view {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 2fr;
     gap: $spacing-md;
 
     @media (width < 1024px) {
@@ -28,8 +46,7 @@
     }
   }
 
-  &__table {
-    height: 30rem;
-    overflow: auto;
+  &__data {
+    min-height: 28rem;
   }
 }

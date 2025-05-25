@@ -1,0 +1,32 @@
+@use "sass:map" as map;
+@use "tokens" as *;
+@use "mixins" as *;
+
+.tag {
+  box-sizing: border-box;
+  width: fit-content;
+  height: fit-content;
+  padding: 0.125rem $spacing-xs;
+
+  display: flex;
+  align-items: center;
+
+  @include border-radius;
+
+  background-color: map.get($map: $primary, $key: 400);
+
+  &--secondary {
+    background-color: map.get($map: $secondary, $key: 400);
+  }
+
+  &--neutral {
+    background-color: map.get($map: $neutral, $key: 300);
+  }
+
+  &__label {
+    @include body-small($font-weight-bold);
+
+    // line-height: 0.875rem;
+    color: map.get($map: $neutral, $key: 100);
+  }
+}

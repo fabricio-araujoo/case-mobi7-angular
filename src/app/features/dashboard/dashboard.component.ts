@@ -1,6 +1,7 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { useLoading } from '~/app/shared/signal-composable/loading';
+import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.component';
 import { DashboradChartComponent } from './components/dashborad-chart/dashborad-chart.component';
 import { DashboradFilterComponent } from './components/dashborad-filter/dashborad-filter.component';
 import { DashboradTableComponent } from './components/dashborad-table/dashborad-table.component';
@@ -11,6 +12,7 @@ import { DashboradTableComponent } from './components/dashborad-table/dashborad-
     DashboradFilterComponent,
     DashboradTableComponent,
     DashboradChartComponent,
+    DashboardMapComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

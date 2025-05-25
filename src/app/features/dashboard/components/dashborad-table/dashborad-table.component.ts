@@ -1,207 +1,88 @@
-import { Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   TableColumn,
   TableComponent,
 } from '~/app/shared/components/table/table.component';
+import { TagComponent } from '../../../../shared/components/tag/tag.component';
 
-type Type = {
-  name: string;
+type IDashboardTableType = {
+  poi: string;
   totalTime: number;
   entries: number;
   lastEntry: number;
-  ignition: number;
+  ignition: boolean;
 };
 
 @Component({
   selector: 'app-dashborad-table',
-  imports: [TableComponent],
+  imports: [TableComponent, TagComponent],
   templateUrl: './dashborad-table.component.html',
   styleUrl: './dashborad-table.component.scss',
 })
-export class DashboradTableComponent {
-  column: TableColumn<Type>[] = [
-    { label: 'Nome', field: 'name' },
-    { label: 'Tempo total', field: 'totalTime' },
-    { label: 'Entradas', field: 'entries' },
-    { label: 'Ultima entrada', field: 'lastEntry' },
-    { label: 'Ignição', field: 'ignition' },
-  ];
+export class DashboradTableComponent implements AfterViewInit {
+  @ViewChild('ignitionCell') ignitionCell!: TemplateRef<{
+    $implicit: IDashboardTableType;
+  }>;
 
-  data = [
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  column: TableColumn<IDashboardTableType>[] = [];
+
+  data: IDashboardTableType[] = [
     {
-      name: 'Eclair',
+      poi: 'Eclair',
       totalTime: 262,
       entries: 16,
       lastEntry: 23,
-      ignition: 23,
+      ignition: true,
     },
     {
-      name: 'Frozen Yogurt',
+      poi: 'Frozen Yogurt',
       totalTime: 159,
       entries: 6,
       lastEntry: 24,
-      ignition: 24,
+      ignition: false,
     },
     {
-      name: 'Ice cream sandwich',
+      poi: 'Ice cream sandwich',
       totalTime: 237,
       entries: 9,
       lastEntry: 37,
-      ignition: 37,
+      ignition: true,
     },
     {
-      name: 'Frozen Yogurt',
+      poi: 'Frozen Yogurt',
       totalTime: 356,
       entries: 16,
       lastEntry: 49,
-      ignition: 49,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
-    },
-    {
-      name: 'Frozen Yogurt',
-      totalTime: 452,
-      entries: 25,
-      lastEntry: 51,
-      ignition: 51,
+      ignition: false,
     },
   ];
+
+  ngAfterViewInit(): void {
+    this.column = [
+      { label: 'Nome', field: 'poi' },
+      { label: 'Tempo total', field: 'totalTime' },
+      { label: 'Entradas', field: 'entries' },
+      { label: 'Última entrada', field: 'lastEntry' },
+      {
+        label: 'Ignição',
+        field: 'ignition',
+        render: this.ignitionCell,
+      },
+    ];
+
+    this.cdr.detectChanges();
+  }
+
+  handleIgnitionName(ignition: boolean): string {
+    return ignition ? 'Em movimento' : 'Desligado';
+  }
 }

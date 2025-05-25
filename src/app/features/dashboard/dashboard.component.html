@@ -3,13 +3,20 @@
     <app-dashborad-filter></app-dashborad-filter>
   </div>
 
-  <div class="dashboard__data">
-    <div class="dashboard__container dashboard__table">
-      <app-dashborad-table></app-dashborad-table>
-    </div>
-    <div class="dashboard__container">
+  <div class="dashboard__container dashboard__table">
+    <header class="dashboard__header">
+      <h4>Pontos encontrados</h4>
+    </header>
+
+    <app-dashborad-table></app-dashborad-table>
+  </div>
+
+  <div class="dashboard__view">
+    <div class="dashboard__container dashboard__data">
       <app-dashborad-chart></app-dashborad-chart>
     </div>
+    <div class="dashboard__container dashboard__data">
+      <app-dashboard-map></app-dashboard-map>
+    </div>
   </div>
-  <div class="dashboard__container">mapa</div>
 </div>

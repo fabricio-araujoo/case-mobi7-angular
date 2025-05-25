@@ -1,13 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 export type TableColumn<T> = {
   label: string;
   field: keyof T;
+  render?: TemplateRef<{ $implicit: T }>;
 };
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })

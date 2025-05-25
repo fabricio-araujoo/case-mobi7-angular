@@ -1,1 +1,8 @@
 <app-table [data]="data" [column]="column"></app-table>
+
+<ng-template #ignitionCell let-row>
+  <app-tag
+    [label]="handleIgnitionName(row.ignition)"
+    [color]="row.ignition ? 'secondary' : 'neutral'"
+  ></app-tag>
+</ng-template>
