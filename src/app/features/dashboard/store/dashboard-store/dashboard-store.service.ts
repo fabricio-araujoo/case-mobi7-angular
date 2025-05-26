@@ -1,12 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { POI } from '~/app/shared/types/POI';
-import { Posicao } from '~/app/shared/types/Posicao';
+import { POI } from '~/app/features/dashboard/types/POI';
+import { Posicao } from '~/app/features/dashboard/types/Posicao';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardStoreService {
-  private readonly _placa = signal<string | null>('');
+  private readonly _placa = signal<string | null>(null);
   private readonly _date = signal<string | null>(null);
 
   private readonly _pois = signal<POI[]>([]);

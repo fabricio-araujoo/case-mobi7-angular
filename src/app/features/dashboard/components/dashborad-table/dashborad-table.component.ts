@@ -3,18 +3,19 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  effect,
   inject,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { POI } from '~/app/features/dashboard/types/POI';
+import { Posicao } from '~/app/features/dashboard/types/Posicao';
 import {
   TableColumn,
   TableComponent,
 } from '~/app/shared/components/table/table.component';
-import { POI } from '~/app/shared/types/POI';
-import { Posicao } from '~/app/shared/types/Posicao';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
-import { generatePOISummary, organizeByVehicle } from '../../helpers/table';
+import { generateDataTable } from '../../helpers/table';
 import { DashboardStoreService } from '../../store/dashboard-store/dashboard-store.service';
 
 export type IDashboardTableType = {
@@ -49,6 +50,15 @@ export class DashboradTableComponent implements AfterViewInit {
     )
   );
 
+  constructor() {
+    effect(() => {
+      console.log('DashboradTableComponent initialized');
+
+      // Re-render the table when positions or POIs change
+      this.cdr.detectChanges();
+    });
+  }
+
   ngAfterViewInit(): void {
     this.column = [
       { label: 'Nome', field: 'poi' },
@@ -74,18 +84,6 @@ export class DashboradTableComponent implements AfterViewInit {
     posicoes: Posicao[],
     pois: POI[]
   ): IDashboardTableType[] {
-    // Agrupa as posições por placa do veículo.
-    const byVehicle = organizeByVehicle(posicoes);
-
-    return Object.entries(byVehicle).flatMap(([placa, lista]) => {
-      const sorted = [...lista].sort(
-        (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
-      );
-
-      // Para cada POI, processa a lista de posições do veículo
-      return pois
-        .map((poi) => generatePOISummary(placa, sorted, poi))
-        .filter((linha): linha is IDashboardTableType => linha !== null); // remove POIs onde não houve entrada
-    });
+    return generateDataTable(posicoes, pois);
   }
 }

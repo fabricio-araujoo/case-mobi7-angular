@@ -1,6 +1,25 @@
-import { POI } from '~/app/shared/types/POI';
-import { Posicao } from '~/app/shared/types/Posicao';
+import { POI } from '~/app/features/dashboard/types/POI';
+import { Posicao } from '~/app/features/dashboard/types/Posicao';
 import { IDashboardTableType } from '../components/dashborad-table/dashborad-table.component';
+
+export function generateDataTable(
+  posicoes: Posicao[],
+  pois: POI[]
+): IDashboardTableType[] {
+  // Agrupa as posições por placa do veículo.
+  const byVehicle = organizeByVehicle(posicoes);
+
+  return Object.entries(byVehicle).flatMap(([placa, lista]) => {
+    const sorted = [...lista].sort(
+      (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
+    );
+
+    // Para cada POI, processa a lista de posições do veículo
+    return pois
+      .map((poi) => generatePOISummary(placa, sorted, poi))
+      .filter((linha): linha is IDashboardTableType => linha !== null); // remove POIs onde não houve entrada
+  });
+}
 
 export function organizeByVehicle(
   posicoes: Posicao[]

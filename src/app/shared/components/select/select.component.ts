@@ -93,12 +93,13 @@ export class SelectComponent
   }
 
   handleSelectOption(option: IOption): void {
-    this._value.set(option.label);
-    this._selectedOption.set(option);
+    if (this.selectedOption()?.value === option.value) {
+      this.updateValue();
+    } else {
+      this.updateValue(option);
+    }
 
     this.toggle();
-
-    this.onChange(option.value);
   }
 
   private onChange: (value: string) => void = () => {};
@@ -106,6 +107,12 @@ export class SelectComponent
 
   private toggle() {
     this._isOpen.update((prev) => !prev);
+  }
+
+  private updateValue(option?: IOption): void {
+    this._value.set(option?.label || '');
+    this._selectedOption.set(option || null);
+    this.onChange(option?.value || '');
   }
 
   private handleOutsideClick(event: MouseEvent): void {

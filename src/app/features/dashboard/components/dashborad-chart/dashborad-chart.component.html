@@ -2,18 +2,23 @@
   <ngx-charts-bar-horizontal
     *ngIf="view"
     [view]="view"
-    [results]="data"
-    [scheme]="options.colorScheme"
-    [gradient]="options.gradient"
-    [xAxis]="options.xAxis.show"
-    [yAxis]="options.yAxis.show"
-    [legend]="options.legend.show"
-    [legendTitle]="options.legend.title"
-    [showXAxisLabel]="options.xAxis.show"
-    [xAxisLabel]="options.xAxis.label"
-    [showYAxisLabel]="options.yAxis.show"
-    [yAxisLabel]="options.yAxis.label"
+    [results]="data()"
+    [scheme]="options.colorScheme || ''"
+    [gradient]="options.gradient || false"
+    [xAxis]="options.xAxis?.show"
+    [showXAxisLabel]="options.xAxis?.show || true"
+    [xAxisLabel]="options.xAxis?.label || ''"
+    [yAxis]="options.yAxis?.show || true"
+    [yAxisLabel]="options.yAxis?.label || ''"
+    [legend]="options.legend?.show || true"
+    [legendTitle]="options.legend?.title || ''"
     [animations]="true"
   >
+    <ng-template #tooltipTemplate let-model="model">
+      <div class="dashboard-chart__tooltip">
+        <p>Placa: {{ model.extra.vehicle }}</p>
+        <p>Tempo: {{ model.extra.totalTime }}</p>
+      </div>
+    </ng-template>
   </ngx-charts-bar-horizontal>
 </div>

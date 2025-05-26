@@ -1,0 +1,12 @@
+@use "tokens" as *;
+@use "mixins" as *;
+
+.dashboard-chart {
+  &__tooltip {
+    padding: $spacing-sm 0;
+
+    text-align: left;
+
+    @include body-small;
+  }
+}

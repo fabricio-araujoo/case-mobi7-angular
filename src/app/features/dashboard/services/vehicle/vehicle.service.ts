@@ -5,6 +5,7 @@ import { IHttpAdapter } from '~/app/core/adapter/http-adapter/http-adapter.servi
 import {
   IGetPlacasResponse,
   IGetPoisResponse,
+  IGetPosicaoParams,
   IGetPosicaoResponse,
 } from './vehicle.service.interface';
 
@@ -34,9 +35,15 @@ export class VehicleService {
     }
   }
 
-  async getPosicao(): Promise<IGetPosicaoResponse | undefined> {
+  async getPosicao(
+    params: IGetPosicaoParams
+  ): Promise<IGetPosicaoResponse | undefined> {
     try {
-      const response = await this.http.get<IGetPosicaoResponse>('/posicao');
+      console.log('getPosicao', params);
+
+      const response = await this.http.get<IGetPosicaoResponse>('/posicao', {
+        ...params,
+      });
 
       if (this.http.hasError(response)) {
         return;
