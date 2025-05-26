@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import {
@@ -6,7 +6,7 @@ import {
   IHttpServiceBody,
   IHttpServiceOptions,
   IHttpServiceQueryParams,
-} from './http-adapter.interface';
+} from './http-adapter.service.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -68,6 +68,26 @@ export class HttpAdapterService implements IHttpAdapter {
         observe: 'response' as const,
       })
     );
+  }
+
+  hasError<T>(request: HttpResponse<T>): boolean {
+    if (!request.body) {
+      return true;
+    }
+
+    const SUCCESS_CODE = [
+      HttpStatusCode.Ok,
+      HttpStatusCode.Created,
+      HttpStatusCode.NoContent,
+    ];
+
+    const error = request.status && !SUCCESS_CODE.includes(request.status);
+
+    if (error) {
+      return true;
+    }
+
+    return false;
   }
 
   private buildUrl(url: string) {

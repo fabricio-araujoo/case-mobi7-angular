@@ -21,6 +21,7 @@ export interface IHttpAdapter {
     queryParams?: IHttpServiceQueryParams,
     options?: IHttpServiceOptions
   ): Promise<HttpResponse<T>>;
+  hasError<T>(request: HttpResponse<T>): boolean;
 }
 
 export type IHttpServiceQueryParams = Record<string, any>;

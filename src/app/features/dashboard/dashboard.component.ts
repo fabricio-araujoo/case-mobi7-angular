@@ -5,6 +5,8 @@ import { DashboardMapComponent } from './components/dashboard-map/dashboard-map.
 import { DashboradChartComponent } from './components/dashborad-chart/dashborad-chart.component';
 import { DashboradFilterComponent } from './components/dashborad-filter/dashborad-filter.component';
 import { DashboradTableComponent } from './components/dashborad-table/dashborad-table.component';
+import { VehicleService } from './services/vehicle/vehicle.service';
+import { DashboardStoreService } from './store/dashboard-store/dashboard-store.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +20,8 @@ import { DashboradTableComponent } from './components/dashborad-table/dashborad-
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  private readonly vehicleService = inject(VehicleService);
+  private readonly dashboardStore = inject(DashboardStoreService);
   private readonly fb = inject(FormBuilder);
 
   readonly loadingSignal = useLoading();
@@ -41,20 +45,30 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingSignal.wrap(this.fetchDataFilter());
+    Promise.all([this.fetchPositions(), this.fetchPois()]);
   }
 
   handleChange(event: any) {
     console.log('changed', event);
   }
 
-  private async fetchDataFilter() {
-    try {
-      setTimeout(() => {
-        console.log('oiii');
-      }, 2000);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+  private async fetchPois() {
+    const response = await this.vehicleService.getPois();
+
+    if (!response) {
+      return;
     }
+
+    this.dashboardStore.setPois(response);
+  }
+
+  private async fetchPositions() {
+    const response = await this.vehicleService.getPosicao();
+
+    if (!response) {
+      return;
+    }
+
+    this.dashboardStore.setPosicoes(response);
   }
 }

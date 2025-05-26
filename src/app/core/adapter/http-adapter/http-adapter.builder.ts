@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { IHttpServiceQueryParams } from './http-adapter.interface';
+import { IHttpServiceQueryParams } from './http-adapter.service.interface';
 
 export const buildQueryParams = (
   queryParams: IHttpServiceQueryParams = {}

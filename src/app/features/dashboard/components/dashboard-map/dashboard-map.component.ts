@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { IMapAdapter } from '~/app/core/adapter/map-adapter/map-adapter.interface';
 import { MapAdapterService } from '~/app/core/adapter/map-adapter/map-adapter.service';
+import { IMapAdapter } from '~/app/core/adapter/map-adapter/map-adapter.service.interface';
 
 @Component({
   selector: 'app-dashboard-map',

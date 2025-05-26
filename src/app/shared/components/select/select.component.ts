@@ -12,7 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconComponent } from '../icon/icon.component';
 
-type Option = { label: string; value: string };
+export type IOption = { label: string; value: string };
 
 @Component({
   selector: 'app-select',
@@ -33,15 +33,15 @@ export class SelectComponent
   @ViewChild('inputRef') inputRef?: ElementRef;
 
   @Input() label = '';
-  @Input() options: Option[] = [];
+  @Input() options: IOption[] = [];
   @Input() placeholder = 'Selecione';
 
   private _value = signal<string>('');
-  private _selectedOption = signal<Option | null>(null);
+  private _selectedOption = signal<IOption | null>(null);
   private _isOpen = signal<boolean>(false);
 
   value = computed<string>(() => this._value());
-  selectedOption = computed<Option | null>(() => this._selectedOption());
+  selectedOption = computed<IOption | null>(() => this._selectedOption());
   isOpen = computed<boolean>(() => this._isOpen());
 
   filteredOptions = computed(() => {
@@ -92,7 +92,7 @@ export class SelectComponent
     this._value.set(inputValue);
   }
 
-  handleSelectOption(option: Option): void {
+  handleSelectOption(option: IOption): void {
     this._value.set(option.label);
     this._selectedOption.set(option);
 

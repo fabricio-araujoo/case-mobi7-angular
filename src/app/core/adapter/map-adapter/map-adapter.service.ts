@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LngLatLike, Map } from 'maplibre-gl';
-import { IMapAdapter, IMapInitOptions } from './map-adapter.interface';
+import { IMapAdapter, IMapInitOptions } from './map-adapter.service.interface';
 
 @Injectable({
   providedIn: 'root',
