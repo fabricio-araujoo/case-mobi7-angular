@@ -3,8 +3,10 @@ import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { useLoading } from '~/app/shared/signal-composable/loading';
 import { DatePickerComponent } from '../../../../shared/components/date-picker/date-picker.component';
-import { SelectComponent } from '../../../../shared/components/select/select.component';
-import { buildPlacasOptions } from '../../helpers/filter';
+import {
+  IOption,
+  SelectComponent,
+} from '../../../../shared/components/select/select.component';
 import { VehicleService } from '../../services/vehicle/vehicle.service';
 import { DashboardStoreService } from '../../store/dashboard-store/dashboard-store.service';
 
@@ -35,7 +37,7 @@ export class DashboradFilterComponent implements OnInit {
   });
 
   readonly placas = computed(() =>
-    buildPlacasOptions(this.dashboardStore.placas())
+    this.buildPlacasOptions(this.dashboardStore.placas())
   );
 
   readonly loadingSignal = useLoading();
@@ -61,5 +63,12 @@ export class DashboradFilterComponent implements OnInit {
     }
 
     this.dashboardStore.setPlacas(response);
+  }
+
+  private buildPlacasOptions(placas: string[]): IOption[] {
+    return placas.map((placa) => ({
+      label: placa,
+      value: placa,
+    }));
   }
 }

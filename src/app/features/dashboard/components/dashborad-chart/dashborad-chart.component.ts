@@ -11,11 +11,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { parseToHours } from '../../helpers/chart';
-import { generateDataTable } from '../../helpers/table';
+import { generateDataTable } from '~/app/shared/utils/dashboardTableHelper';
+import { parseStringToHours } from '~/app/shared/utils/dateTimeHelper';
+import { POI } from '../../../../shared/types/POI';
+import { Posicao } from '../../../../shared/types/Posicao';
 import { DashboardStoreService } from '../../store/dashboard-store/dashboard-store.service';
-import { POI } from '../../types/POI';
-import { Posicao } from '../../types/Posicao';
 import { IDashboardTableType } from '../dashborad-table/dashborad-table.component';
 
 type ChartDataItem = {
@@ -136,7 +136,7 @@ export class DashboradChartComponent implements AfterViewInit, OnDestroy {
 
       grouped.get(row.poi)!.series.push({
         name: row.vehicle,
-        value: parseToHours(row.totalTime),
+        value: parseStringToHours(row.totalTime),
         extra: { ...row },
       });
     });

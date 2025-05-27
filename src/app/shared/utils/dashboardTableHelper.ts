@@ -1,6 +1,6 @@
-import { POI } from '~/app/features/dashboard/types/POI';
-import { Posicao } from '~/app/features/dashboard/types/Posicao';
-import { IDashboardTableType } from '../components/dashborad-table/dashborad-table.component';
+import { IDashboardTableType } from '~/app/features/dashboard/components/dashborad-table/dashborad-table.component';
+import { POI } from '~/app/shared/types/POI';
+import { Posicao } from '~/app/shared/types/Posicao';
 
 export function generateDataTable(
   posicoes: Posicao[],

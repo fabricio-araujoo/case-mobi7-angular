@@ -8,14 +8,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { POI } from '~/app/features/dashboard/types/POI';
-import { Posicao } from '~/app/features/dashboard/types/Posicao';
 import {
   TableColumn,
   TableComponent,
 } from '~/app/shared/components/table/table.component';
+import { POI } from '~/app/shared/types/POI';
+import { Posicao } from '~/app/shared/types/Posicao';
+import { generateDataTable } from '~/app/shared/utils/dashboardTableHelper';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
-import { generateDataTable } from '../../helpers/table';
 import { DashboardStoreService } from '../../store/dashboard-store/dashboard-store.service';
 
 export type IDashboardTableType = {
