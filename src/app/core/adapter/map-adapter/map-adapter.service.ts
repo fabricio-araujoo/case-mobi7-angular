@@ -7,6 +7,7 @@ import {
   Source,
   TypedStyleLayer,
 } from 'maplibre-gl';
+import { environment } from '~/environment/environment';
 import {
   IMapAdapter,
   IMapInitOptions,
@@ -17,7 +18,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class MapAdapterService implements IMapAdapter {
   private mapInstance!: Map;
-  private readonly key = 'nny032iKN6rA7I0BqENm';
+
+  private readonly key = environment.maplibreKey;
 
   get map(): Map {
     return this.mapInstance;

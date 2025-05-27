@@ -85,29 +85,20 @@ export class DashboardMapComponent {
 
     this.mapAdapter.addSource<{}>(
       id,
-      posicoes.map((posicao) => {
-        if (
-          posicao.latitude === -25.364813 &&
-          posicao.longitude === -51.4699568
-        ) {
-          console.log('Adicionando posição:', posicao);
-        }
-
-        return {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [posicao.longitude, posicao.latitude],
-          },
-          properties: {
-            Id: posicao.id,
-            Placa: posicao.placa,
-            Data: formatDate(new Date(posicao.data)),
-            Ignição: posicao.ignicao ? 'Ligado' : 'Desligado',
-            LatLng: `${posicao.latitude}, ${posicao.longitude}`,
-          },
-        };
-      })
+      posicoes.map((posicao) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [posicao.longitude, posicao.latitude],
+        },
+        properties: {
+          Id: posicao.id,
+          Placa: posicao.placa,
+          Data: formatDate(new Date(posicao.data)),
+          Ignição: posicao.ignicao ? 'Ligado' : 'Desligado',
+          LatLng: `${posicao.latitude}, ${posicao.longitude}`,
+        },
+      }))
     );
 
     this.mapAdapter.addPointLayer(id);

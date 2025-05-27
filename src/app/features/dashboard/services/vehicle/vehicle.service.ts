@@ -39,8 +39,6 @@ export class VehicleService {
     params: IGetPosicaoParams
   ): Promise<IGetPosicaoResponse | undefined> {
     try {
-      console.log('getPosicao', params);
-
       const response = await this.http.get<IGetPosicaoResponse>('/posicao', {
         ...params,
       });

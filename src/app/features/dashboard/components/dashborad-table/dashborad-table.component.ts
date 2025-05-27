@@ -52,9 +52,6 @@ export class DashboradTableComponent implements AfterViewInit {
 
   constructor() {
     effect(() => {
-      console.log('DashboradTableComponent initialized');
-
-      // Re-render the table when positions or POIs change
       this.cdr.detectChanges();
     });
   }

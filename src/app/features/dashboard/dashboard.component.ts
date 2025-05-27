@@ -26,17 +26,13 @@ export class DashboardComponent {
 
   constructor() {
     effect(() => {
-      console.log('DashboardComponent initialized');
-
       this.dashboardStore.filter();
 
       Promise.all([this.fetchPositions(), this.fetchPois()]);
     });
   }
 
-  handleChange(event: any) {
-    console.log('changed', event);
-  }
+  handleChange(event: any) {}
 
   private async fetchPois() {
     const response = await this.vehicleService.getPois();

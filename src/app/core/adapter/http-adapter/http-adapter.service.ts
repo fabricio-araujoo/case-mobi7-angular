@@ -1,6 +1,7 @@
 import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '~/environment/environment';
 import {
   IHttpAdapter,
   IHttpServiceBody,
@@ -14,7 +15,7 @@ import {
 export class HttpAdapterService implements IHttpAdapter {
   private readonly http = inject(HttpClient);
 
-  private readonly baseUrl = 'https://challenge-backend.mobi7.io/';
+  private readonly baseUrl = environment.apiUrl;
 
   get<T>(
     url: string,
