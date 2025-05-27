@@ -77,7 +77,7 @@ export class DashboradTableComponent implements AfterViewInit {
   }
 
   handleIgnitionName(ignition: boolean): string {
-    return ignition ? 'Em movimento' : 'Desligado';
+    return ignition ? 'Ligado' : 'Desligado';
   }
 
   private generateDataTable(

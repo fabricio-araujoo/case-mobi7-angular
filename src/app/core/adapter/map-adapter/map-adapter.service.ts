@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LngLatLike, Map, MapLayerMouseEvent, Popup } from 'maplibre-gl';
+import {
+  LngLatLike,
+  Map,
+  MapLayerMouseEvent,
+  Popup,
+  Source,
+  TypedStyleLayer,
+} from 'maplibre-gl';
 import {
   IMapAdapter,
   IMapInitOptions,
@@ -29,10 +36,6 @@ export class MapAdapterService implements IMapAdapter {
     this.mapInstance?.remove();
   }
 
-  isAlreadyExistLayer(id: string): boolean {
-    return this.mapInstance.getLayer(`Layer__${id}`) !== undefined;
-  }
-
   async addImage(id: string, image: string): Promise<void> {
     const _image = await this.mapInstance.loadImage(image);
 
@@ -49,7 +52,7 @@ export class MapAdapterService implements IMapAdapter {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: geoJsonFeatures as any, // ensure type compatibility
+        features: geoJsonFeatures as any,
       },
     };
 
@@ -62,8 +65,7 @@ export class MapAdapterService implements IMapAdapter {
       type: 'symbol',
       source: this.sourceId(id),
       layout: {
-        'icon-image': `Image__${id}`,
-        // get the year from the source's "year" property
+        'icon-image': this.imageId(id),
         'text-field': ['get', 'year'],
         'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
         'text-offset': [0, 1.25],
@@ -71,15 +73,7 @@ export class MapAdapterService implements IMapAdapter {
       },
     });
 
-    this.mapInstance.on('click', this.layerId(id), (e: MapLayerMouseEvent) => {
-      const feature = e.features?.[0];
-      if (!feature) return;
-
-      new Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(`<strong>${feature.properties}</strong>`)
-        .addTo(this.mapInstance);
-    });
+    this.addPopup(id);
   }
 
   addPolygonLayer(
@@ -98,6 +92,16 @@ export class MapAdapterService implements IMapAdapter {
     });
   }
 
+  getLayer(id: string): TypedStyleLayer | undefined {
+    return this.mapInstance.getLayer(this.layerId(id)) as
+      | TypedStyleLayer
+      | undefined;
+  }
+
+  getSource(id: string): Source | undefined {
+    return this.mapInstance.getSource(this.sourceId(id));
+  }
+
   removeImage(id: string): void {
     if (this.mapInstance.hasImage(this.imageId(id))) {
       this.mapInstance.removeImage(this.imageId(id));
@@ -105,18 +109,65 @@ export class MapAdapterService implements IMapAdapter {
   }
 
   removeLayer(id: string): void {
-    if (this.mapInstance.getLayer(this.layerId(id))) {
-      this.mapInstance.removeLayer(this.layerId(id));
+    const layerId = this.layerId(id);
+    if (this.mapInstance.getLayer(layerId)) {
+      this.mapInstance.removeLayer(layerId);
     }
   }
 
   removeSource(id: string): void {
-    if (this.mapInstance.getSource(this.sourceId(id))) {
-      this.mapInstance.removeSource(this.sourceId(id));
+    const sourceId = this.sourceId(id);
+    if (this.mapInstance.getSource(sourceId)) {
+      this.mapInstance.removeSource(sourceId);
     }
   }
 
-  // Helpers for consistent IDs
+  removeAllForId(id: string): void {
+    this.removeLayer(id);
+    this.removeSource(id);
+    this.removeImage(id);
+  }
+
+  private addPopup(id: string) {
+    const popup = new Popup({
+      closeButton: false,
+      closeOnClick: false,
+      className: 'map__popup',
+      offset: [0, -16],
+    });
+
+    this.mapInstance.on(
+      'mouseenter',
+      this.layerId(id),
+      (e: MapLayerMouseEvent) => {
+        this.mapInstance.getCanvas().style.cursor = 'pointer';
+
+        const feature = e.features?.[0];
+        if (!feature || !feature.geometry) return;
+
+        const coordinates = (feature.geometry as any).coordinates.slice();
+        const properties = feature.properties as Record<string, any>;
+
+        const html = `
+          <div style="max-width: 240px;">
+            ${Object.entries(properties)
+              .map(
+                ([key, value]) => `<div><strong>${key}</strong>: ${value}</div>`
+              )
+              .join('')}
+          </div>
+        `;
+
+        popup.setLngLat(coordinates).setHTML(html).addTo(this.mapInstance);
+      }
+    );
+
+    this.mapInstance.on('mouseleave', this.layerId(id), () => {
+      this.mapInstance.getCanvas().style.cursor = '';
+      popup.remove();
+    });
+  }
+
   private layerId(id: string): string {
     return `Layer__${id}`;
   }

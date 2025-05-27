@@ -21,7 +21,17 @@ import { IDashboardTableType } from '../dashborad-table/dashborad-table.componen
 type ChartDataItem = {
   name: string;
   value: number;
-} & Partial<IDashboardTableType>;
+  extra: Partial<IDashboardTableType>;
+};
+
+type ChartSeries = {
+  name: string;
+  series: {
+    name: string;
+    value: number;
+    extra: Partial<IDashboardTableType>;
+  }[];
+};
 
 type AxisOptions = {
   show: boolean;
@@ -57,7 +67,7 @@ export class DashboradChartComponent implements AfterViewInit, OnDestroy {
 
   private observer!: ResizeObserver;
 
-  private readonly _data = signal<ChartDataItem[]>([]);
+  private readonly _data = signal<ChartSeries[]>([]);
 
   readonly data = computed(() => this._data());
 
@@ -111,17 +121,26 @@ export class DashboradChartComponent implements AfterViewInit, OnDestroy {
     this.observer?.disconnect();
   }
 
-  tooltipFormatter = (d: ChartDataItem): string => {
-    return `${d.poi} — ${d.totalTime}\nEntradas: ${d.entries}\nÚltima: ${d.lastEntry}`;
-  };
+  private generateChartData(posicoes: Posicao[], pois: POI[]): ChartSeries[] {
+    const grouped = new Map<string, ChartSeries>();
 
-  private generateChartData(posicoes: Posicao[], pois: POI[]): ChartDataItem[] {
-    return generateDataTable(posicoes, pois).map((row) => ({
-      name: row.poi,
-      value: parseToHours(row.totalTime),
-      extra: {
-        ...row,
-      },
-    }));
+    generateDataTable(posicoes, pois).forEach((row) => {
+      const hasKey = grouped.has(row.poi);
+
+      if (!hasKey) {
+        grouped.set(row.poi, {
+          name: row.poi,
+          series: [],
+        });
+      }
+
+      grouped.get(row.poi)!.series.push({
+        name: row.vehicle,
+        value: parseToHours(row.totalTime),
+        extra: { ...row },
+      });
+    });
+
+    return Array.from(grouped.values());
   }
 }

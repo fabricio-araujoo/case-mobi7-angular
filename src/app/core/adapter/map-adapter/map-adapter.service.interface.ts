@@ -1,11 +1,15 @@
-import { Feature, Map, SourceSpecification } from 'maplibre-gl';
+import {
+  Feature,
+  Map,
+  Source,
+  SourceSpecification,
+  TypedStyleLayer,
+} from 'maplibre-gl';
 
 export interface IMapAdapter {
   map: Map;
   initMap(container: HTMLElement, options: IMapInitOptions): void;
   destroy(): void;
-
-  isAlreadyExistLayer(id: string): boolean;
 
   addImage(id: string, image: string): Promise<void>;
   addSource<T>(id: string, features: IMapSourceFeature<T>[]): void;
@@ -15,6 +19,10 @@ export interface IMapAdapter {
     style: { fill?: string; opacity?: number; outline?: string }
   ): void;
 
+  getLayer(id: string): TypedStyleLayer | undefined;
+  getSource(id: string): Source | undefined;
+
+  removeAllForId(id: string): void;
   removeImage(id: string): void;
   removeLayer(id: string): void;
   removeSource(id: string): void;

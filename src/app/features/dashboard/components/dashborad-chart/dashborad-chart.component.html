@@ -1,5 +1,5 @@
 <div #wrapper style="width: 100%; height: 100%">
-  <ngx-charts-bar-horizontal
+  <ngx-charts-bar-horizontal-2d
     *ngIf="view"
     [view]="view"
     [results]="data()"
@@ -13,6 +13,8 @@
     [legend]="options.legend?.show || true"
     [legendTitle]="options.legend?.title || ''"
     [animations]="true"
+    [barPadding]="24"
+    [noBarWhenZero]="true"
   >
     <ng-template #tooltipTemplate let-model="model">
       <div class="dashboard-chart__tooltip">
@@ -20,5 +22,5 @@
         <p>Tempo: {{ model.extra.totalTime }}</p>
       </div>
     </ng-template>
-  </ngx-charts-bar-horizontal>
+  </ngx-charts-bar-horizontal-2d>
 </div>

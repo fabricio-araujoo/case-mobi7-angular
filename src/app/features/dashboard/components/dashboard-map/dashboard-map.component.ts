@@ -8,9 +8,8 @@ import {
 } from '@angular/core';
 import { MapAdapterService } from '~/app/core/adapter/map-adapter/map-adapter.service';
 import { IMapAdapter } from '~/app/core/adapter/map-adapter/map-adapter.service.interface';
-import { createGeoCircle } from '../../helpers/map';
+import { createGeoCircle, formatDate } from '../../helpers/map';
 import { DashboardStoreService } from '../../store/dashboard-store/dashboard-store.service';
-import { Posicao } from '../../types/Posicao';
 
 @Component({
   selector: 'app-dashboard-map',
@@ -30,6 +29,8 @@ export class DashboardMapComponent {
   constructor() {
     effect(() => {
       if (this.isLoadMap()) {
+        const posicao = this.dashboardStore.posicoes();
+
         this.handleLoadPosicaoLayer();
       }
     });
@@ -45,14 +46,6 @@ export class DashboardMapComponent {
       this.handleLoadMap();
       this.handleLoadPoisArea();
     });
-
-    this.mapAdapter.map.on('click', 'Layer__PosicaoLayer', (e) => {
-      const feature = e.features?.[0];
-      if (!feature) return;
-
-      const coordinates = (feature.geometry as any).coordinates.slice();
-      const nome = feature.properties || 'Sem nome';
-    });
   }
 
   ngOnDestroy(): void {
@@ -63,34 +56,15 @@ export class DashboardMapComponent {
     this.isLoadMap.set(true);
   }
 
-  private handleLoadPosicaoLayer(): void {
-    const id = 'PosicaoLayer';
+  private async handleLoadPosicaoLayer(): Promise<void> {
+    const id = 'Posicao';
 
-    this.removeLayer(id);
-
-    const blueMarker = 'assets/images/marker-blue.png';
-
-    const posicoes = this.dashboardStore.posicoes();
-
-    this.mapAdapter.addImage(id, blueMarker);
-
-    this.mapAdapter.addSource<Posicao>(
-      id,
-      posicoes.map((posicao) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [posicao.longitude, posicao.latitude],
-        },
-        properties: { ...posicao },
-      }))
-    );
-
-    this.mapAdapter.addPointLayer(id);
+    this.mapAdapter.removeAllForId(id);
+    await this.addLayer(id); // lembre-se de colocar `await` se `addLayer` usa `addImage` que é assíncrono
   }
 
   private handleLoadPoisArea(): void {
-    const id = 'PoisAreaLayer';
+    const id = 'PoisArea';
 
     const pois = this.dashboardStore.pois();
 
@@ -102,11 +76,54 @@ export class DashboardMapComponent {
     this.mapAdapter.addPolygonLayer(id, {});
   }
 
-  private removeLayer(id: string): void {
-    if (this.mapAdapter.isAlreadyExistLayer(id)) {
+  private addLayer(id: string): void {
+    const blueMarker = 'assets/images/marker-blue.png';
+
+    const posicoes = this.dashboardStore.posicoes();
+
+    this.mapAdapter.addImage(id, blueMarker);
+
+    this.mapAdapter.addSource<{}>(
+      id,
+      posicoes.map((posicao) => {
+        if (
+          posicao.latitude === -25.364813 &&
+          posicao.longitude === -51.4699568
+        ) {
+          console.log('Adicionando posição:', posicao);
+        }
+
+        return {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [posicao.longitude, posicao.latitude],
+          },
+          properties: {
+            Id: posicao.id,
+            Placa: posicao.placa,
+            Data: formatDate(new Date(posicao.data)),
+            Ignição: posicao.ignicao ? 'Ligado' : 'Desligado',
+            LatLng: `${posicao.latitude}, ${posicao.longitude}`,
+          },
+        };
+      })
+    );
+
+    this.mapAdapter.addPointLayer(id);
+  }
+
+  private async removeLayer(id: string): Promise<void> {
+    const layerExists = this.mapAdapter.getLayer(id);
+    const sourceExists = this.mapAdapter.getSource(id);
+
+    if (layerExists) {
       this.mapAdapter.removeLayer(id);
-      this.mapAdapter.removeSource(id);
       this.mapAdapter.removeImage(id);
+    }
+
+    if (sourceExists) {
+      this.mapAdapter.removeSource(id);
     }
   }
 }

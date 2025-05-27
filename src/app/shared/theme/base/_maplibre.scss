@@ -1,0 +1,16 @@
+@use "tokens" as *;
+@use "mixins" as *;
+
+.map {
+  &__popup {
+    .maplibregl-popup-tip {
+      display: none !important;
+    }
+
+    .maplibregl-popup-content {
+      padding: $spacing-sm !important;
+
+      font-family: $font !important;
+    }
+  }
+}
